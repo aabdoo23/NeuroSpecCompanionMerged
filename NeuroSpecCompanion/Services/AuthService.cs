@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using NeuroSpec.Shared.Models.DTO;
+﻿using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
+using System.Text.Json;
 
 
 namespace NeuroSpecCompanion.Services
@@ -37,13 +31,13 @@ namespace NeuroSpecCompanion.Services
             var patient = JsonSerializer.Deserialize<Patient>(content, options);
             return patient;
         }
-        public async Task<bool> VerifyPatientCallerAsync(int patientID, string password,bool autoLogin)
+        public async Task<bool> VerifyPatientCallerAsync(int patientID, string password, bool autoLogin)
         {
             PatientService patientService = new PatientService();
             var response = await _httpClient.GetAsync(_baseApi + "/" + patientID + "/" + password);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            var isValid= JsonSerializer.Deserialize<bool>(content);
+            var isValid = JsonSerializer.Deserialize<bool>(content);
             if (isValid)
             {
                 var patient = await GetPatientByIdAsync(patientID);
